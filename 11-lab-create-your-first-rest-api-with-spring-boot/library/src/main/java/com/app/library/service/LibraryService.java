@@ -35,7 +35,14 @@ public class LibraryService {
     // Get a book by Title
     public Optional<Book> getBookByTitle(String title) {
         return books.stream()
-                .filter(book -> book.getTitle().matches(title))
+                .filter(book -> book.getTitle().toLowerCase().contains(title.toLowerCase()))
+                .findFirst();
+    }
+
+    // Get a book by Austhor
+    public Optional<Book> getBookByAuthor(String author) {
+        return books.stream()
+                .filter(book -> book.getTitle().toLowerCase().contains(author.toLowerCase()))
                 .findFirst();
     }
 

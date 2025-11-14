@@ -47,10 +47,19 @@ public class LibraryController {
     }
 
     // Get a book by title
-    @GetMapping("/books/{title}")
-    public ResponseEntity<Book> getBookByTitle(@PathVariable String title) {
+    @GetMapping("/books{title}")
+    public ResponseEntity<Book> getBookByTitle(@RequestParam String title) {
         Optional<Book> book = libraryService.getBookByTitle(title);
         logger.info("The book you searched: "+book);
+        return book.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    // Get a book by author
+    @GetMapping("/books{author}")
+    public ResponseEntity<Book> getBookByAuthor(@RequestParam String author) {
+        Optional<Book> book = libraryService.getBookByAuthor(author);
+        logger.info("The book you searched with the author provided: "+book);
         return book.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
